@@ -14,25 +14,27 @@ jobs:
 
       - name: Push to hub
         env:
+          # Aapka secret name 'HG' yahan update kar diya hai
           HF_TOKEN: ${{ secrets.HG }}
         run: |
-          # 1. Clone the Hugging Face Space repository into a subfolder
-          git clone https://dev-mzeeshan:$HG@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer hf_space
+          # 1. Clone the Space repo (to keep README/Requirements safe)
+          git clone https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer hf_space
           
-          # 2. Copy only the updated code files into that folder
+          # 2. Copy only your updated code files
           cp app.py hf_space/
           cp analyzer.py hf_space/
           
-          # 3. Go into the folder, commit specific changes, and push
+          # 3. Commit and Push
           cd hf_space
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           
-          # Only add the files you want to update
           git add app.py analyzer.py
           
-          # Commit only if there are changes
-          git commit -m "Update app logic only" || echo "No changes to commit"
-          
-          # Push back to Hugging Face
-          git push origin main
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Update app logic"
+            # Direct push using token in URL
+            git push https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer main
+          else
+            echo "No changes to deploy"
+          fi
