@@ -2,7 +2,6 @@ name: Sync to Hugging Face hub
 on:
   push:
     branches: [main]
-  # Is se aap manually bhi trigger kar sakte hain
   workflow_dispatch:
 
 jobs:
@@ -12,9 +11,31 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          lfs: true
+
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HG }}
         run: |
-          git push --force https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer main
+          # 1. Create a temporary deployment directory
+          mkdir deploy_dir
+          
+          # 2. Copy only the necessary files for Hugging Face
+          # README and local requirements are skipped by not including them here
+          cp app.py deploy_dir/
+          cp analyzer.py deploy_dir/
+          # If you have extra folders (e.g., assets), add them using 'cp -r' here
+          
+          # 3. Initialize a temporary git repository inside deploy_dir
+          cd deploy_dir
+          git init
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          # 4. Add the Hugging Face repository as a remote
+          # Ensure dev-mzeeshan/customer-feedback-analyzer matches your HF Space URL
+          git remote add origin https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer
+          
+          # 5. Add files, commit, and force push to the HF Space
+          git add .
+          git commit -m "Deploying specific files only"
+          git push --force origin master:main
