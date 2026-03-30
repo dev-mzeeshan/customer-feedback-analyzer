@@ -14,28 +14,25 @@ jobs:
 
       - name: Push to hub
         env:
-          HF_TOKEN: ${{ secrets.HG }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # 1. Create a temporary deployment directory
-          mkdir deploy_dir
+          # 1. Clone the Hugging Face Space repository into a subfolder
+          git clone https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer hf_space
           
-          # 2. Copy only the necessary files for Hugging Face
-          # README and local requirements are skipped by not including them here
-          cp app.py deploy_dir/
-          cp analyzer.py deploy_dir/
-          # If you have extra folders (e.g., assets), add them using 'cp -r' here
+          # 2. Copy only the updated code files into that folder
+          cp app.py hf_space/
+          cp analyzer.py hf_space/
           
-          # 3. Initialize a temporary git repository inside deploy_dir
-          cd deploy_dir
-          git init
+          # 3. Go into the folder, commit specific changes, and push
+          cd hf_space
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           
-          # 4. Add the Hugging Face repository as a remote
-          # Ensure dev-mzeeshan/customer-feedback-analyzer matches your HF Space URL
-          git remote add origin https://dev-mzeeshan:$HF_TOKEN@huggingface.co/spaces/dev-mzeeshan/customer-feedback-analyzer
+          # Only add the files you want to update
+          git add app.py analyzer.py
           
-          # 5. Add files, commit, and force push to the HF Space
-          git add .
-          git commit -m "Deploying specific files only"
-          git push --force origin master:main
+          # Commit only if there are changes
+          git commit -m "Update app logic only" || echo "No changes to commit"
+          
+          # Push back to Hugging Face
+          git push origin main
