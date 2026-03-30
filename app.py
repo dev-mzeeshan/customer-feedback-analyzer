@@ -281,7 +281,7 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo"), css=CSS, title="AI Fe
             load_sample_btn.click(lambda: S_BATCH, outputs=batch_input)
 
         gr.Markdown(
-        "<p style='font-size:12px;color:var(--c-text-faint);text-align:center;margin-top:24px'>Powered by Groq API &nbsp;·&nbsp; Llama 3.3 70B &nbsp;·&nbsp; Gradio 5 &nbsp;·&nbsp; <a href='https://github.com/dev-mzeeshan/customer-feedback-analyzer' target='_blank'>View on GitHub</a></p>"
+        "<p style='font-size:12px;color:var(--c-text-faint);text-align:center;margin-top:24px'>Powered by Groq API &nbsp;·&nbsp; Llama 3.3 70B &nbsp;·&nbsp; Gradio 5.1 &nbsp;·&nbsp; <a href='https://github.com/dev-mzeeshan/customer-feedback-analyzer' target='_blank'>View on GitHub</a></p>"
     )
 
 if __name__ == "__main__":
