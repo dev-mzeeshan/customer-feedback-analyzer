@@ -216,13 +216,13 @@ def format_single_result(result: dict) -> str:
 **Issues:** {", ".join(d.get('negative_aspects', [])) if d.get('negative_aspects') else "None"}
 
 ---
-**💡 Recommendation:** {d.get('actionable_recommendation', 'N/A')}
+**Recommendation:** {d.get('actionable_recommendation', 'N/A')}
 """
 
 
 # UI Components
 with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo"), css=CSS, title="AI Feedback Analyzer") as demo:
-    gr.Markdown("# 🔍 Customer Feedback Analyzer")
+    gr.Markdown("# Customer Feedback Analyzer")
     gr.Markdown("AI-powered sentiment analysis and actionable business insights &nbsp;·&nbsp; Built by [**Muhammad Zeeshan**](https://zeeshan-portfolio-amber.vercel.app) &nbsp;·&nbsp; [LinkedIn](https://linkedin.com/in/zeeshanofficial) &nbsp;·&nbsp; [GitHub](https://github.com/dev-mzeeshan)")
 
     with gr.Tabs():
