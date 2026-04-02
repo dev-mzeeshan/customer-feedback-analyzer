@@ -190,7 +190,7 @@ def format_single_result(result: dict) -> str:
         return f"### Error\n{result['error']}"
 
     d = result["data"]
-    sentiment_map = {"Positive": "Positive", "Negative": "Negative", "Neutral": "Neutral", "Mixed": "🟡 Mixed"}
+    sentiment_map = {"Positive": "Positive", "Negative": "Negative", "Neutral": "Neutral", "Mixed": "Mixed"}
     priority_map = {"High": "High", "Medium": "Medium", "Low": "Low"}
 
     score = d.get("sentiment_score", 0)
@@ -212,8 +212,8 @@ def format_single_result(result: dict) -> str:
 
 **Key Topics:** {", ".join(d.get('key_topics', []))}
 
-**✅ Positive:** {", ".join(d.get('positive_aspects', [])) if d.get('positive_aspects') else "None"}
-**❌ Issues:** {", ".join(d.get('negative_aspects', [])) if d.get('negative_aspects') else "None"}
+**Positive:** {", ".join(d.get('positive_aspects', [])) if d.get('positive_aspects') else "None"}
+**Issues:** {", ".join(d.get('negative_aspects', [])) if d.get('negative_aspects') else "None"}
 
 ---
 **💡 Recommendation:** {d.get('actionable_recommendation', 'N/A')}
